@@ -53,45 +53,6 @@ Authorization: Bearer <token>
 ```
 
 * Déconnexion via `GET /logout`
-
----
-
-## 📂 Structure du projet
-
-```bash
-port-russell-api/
-│
-├── controllers/
-│   ├── auth.controller.js
-│   ├── catway.controller.js
-│   ├── reservation.controller.js
-│   └── user.controller.js
-│
-├── models/
-│   ├── catway.js
-│   ├── reservation.js
-│   └── user.js
-│
-├── routes/
-│   ├── auth.routes.js
-│   ├── catway.routes.js
-│   ├── reservation.routes.js
-│   └── user.routes.js
-│
-├── public/
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── css/
-│   └── js/
-│       ├── auth.js
-│       └── dashboard.js
-│
-├── server.js
-├── .env
-├── .gitignore
-└── README.md
-```
-
 ---
 
 ## 🖥️ Interface utilisateur
