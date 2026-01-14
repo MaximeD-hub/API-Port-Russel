@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>📊 Tableau de bord</h1>
+
+        <button id="logout">Se déconnecter</button>
+
+    <h2>Catways</h2>
+        <ul id="catwaysList"></ul>
+
+    <h3>Ajouter un catway</h3>
+        <form id="catwayForm">
+            <input type="number" id="number" min="1" placeholder="Numéro" required />
+            <select id="type">
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+            </select>
+
+    <input type="text" id="state" placeholder="État" required />
+    <button type="submit">Ajouter</button>
+        </form>
+
+  <p id="message"></p>
+
+<hr />
+
+    <h2>Réservations</h2>
+
+        <form id="reservationForm">
+            <input type="number" id="resCatway" min="1" placeholder="Numéro catway" required />
+            <input type="text" id="clientName" placeholder="Nom du client" required />
+            <input type="text" id="boatName" placeholder="Nom du bateau" required />
+            <input type="date" id="startDate" required />
+            <input type="date" id="endDate" required />
+            <button type="submit">Ajouter réservation</button>
+        </form>
+
+    <ul id="reservationsList"></ul>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
