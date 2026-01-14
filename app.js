@@ -6,14 +6,19 @@ const app = express();
 const Catway = require("./models/Catway");
 const Reservation = require("./models/Reservation");
 
+const authRoutes = require("./routes/auth.routes");
+
 
 //user Test
-const User = require("./models/User");
+const User = require("./models/user");
 
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use(authRoutes);
 
 // Route test
 app.get("/", (req, res) => {
