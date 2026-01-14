@@ -1,27 +1,50 @@
-const User = require("../models/user");
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
+// CREATE
 exports.createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "Champs manquants" });
-    }
-
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(409).json({ message: "Email déjà utilisé" });
-    }
-
-    const user = new User({ username, email, password });
+    const user = new User(req.body);
     await user.save();
-
-    res.status(201).json({ message: "Utilisateur créé avec succès" });
+    res.status(201).json({ message: "Utilisateur créé" });
   } catch (error) {
-  console.error("❌ ERREUR CREATE USER :", error);
-  res.status(500).json({
-    message: "Erreur serveur",
-    error: error.message
-  });
-}
+    res.status(500).json({ message: "Erreur création utilisateur" });
+  }
+};
+
+// READ ALL
+exports.getUsers = async (req, res) => {
+  const users = await User.find().select("-password");
+  res.json(users);
+};
+
+// READ ONE
+exports.getUserByEmail = async (req, res) => {
+  const user = await User.findOne({ email: req.params.email }).select("-password");
+  if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+  res.json(user);
+};
+
+// UPDATE
+exports.updateUser = async (req, res) => {
+  const update = { ...req.body };
+  if (update.password) {
+    update.password = await bcrypt.hash(update.password, 10);
+  }
+
+  const user = await User.findOneAndUpdate(
+    { email: req.params.email },
+    update,
+    { new: true }
+  ).select("-password");
+
+  if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+  res.json(user);
+};
+
+// DELETE
+exports.deleteUser = async (req, res) => {
+  const user = await User.findOneAndDelete({ email: req.params.email });
+  if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+  res.json({ message: "Utilisateur supprimé" });
 };
