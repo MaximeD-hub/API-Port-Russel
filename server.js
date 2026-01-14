@@ -12,3 +12,7 @@ app.listen(PORT, () => {
 
 const catwayRoutes = require("./routes/catway.routes");
 app.use("/catways", catwayRoutes);
+
+
+const reservationRoutes = require("./routes/reservation.routes");
+app.use("/catways", reservationRoutes);
