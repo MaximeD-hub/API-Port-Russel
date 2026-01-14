@@ -8,24 +8,22 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch("/login", {
+    const res = await fetch("/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (!response.ok) {
+    if (!res.ok) {
       error.textContent = data.message || "Erreur de connexion";
       return;
     }
 
     localStorage.setItem("token", data.token);
     window.location.href = "/dashboard.html";
-  } catch (err) {
+  } catch {
     error.textContent = "Erreur serveur";
   }
 });

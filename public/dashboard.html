@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Dashboard</title>
 </head>
 <body>
@@ -17,20 +17,19 @@
     <h3>Ajouter un catway</h3>
         <form id="catwayForm">
             <input type="number" id="number" min="1" placeholder="Numéro" required />
+
             <select id="type">
                 <option value="long">Long</option>
                 <option value="short">Short</option>
             </select>
 
-    <input type="text" id="state" placeholder="État" required />
-    <button type="submit">Ajouter</button>
+            <input type="text" id="state" placeholder="État" required />
+                <button type="submit">Ajouter</button>
         </form>
 
-  <p id="message"></p>
+<hr>
 
-<hr />
-
-    <h2>Réservations</h2>
+    <h2>Ajouter une Réservation</h2>
 
         <form id="reservationForm">
             <input type="number" id="resCatway" min="1" placeholder="Numéro catway" required />
@@ -43,6 +42,21 @@
 
     <ul id="reservationsList"></ul>
 
-  <script src="dashboard.js"></script>
+<hr>
+
+    <h3>Ajouter un utilisateur</h3>
+
+        <form id="userForm">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required />
+            <input type="email" id="userEmail" placeholder="Email" required />
+            <input type="password" id="userPassword" placeholder="Mot de passe" required />
+            <button type="submit">Ajouter</button>
+        </form>
+      
+    <ul id="usersList"></ul>
+
+    <p id="message"></p>
+
+  <script src="./js/dashboard.js"></script>
 </body>
 </html>
