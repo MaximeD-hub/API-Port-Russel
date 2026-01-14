@@ -7,6 +7,7 @@ const Catway = require("./models/Catway");
 const Reservation = require("./models/Reservation");
 
 const authRoutes = require("./routes/auth.routes");
+const userRoutes = require("./routes/user.routes");
 
 
 //user Test
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use(authRoutes);
+app.use(userRoutes);
 
 // Route test
 app.get("/", (req, res) => {
