@@ -27,7 +27,7 @@ Une **interface frontend simple** permet aux utilisateurs authentifiés de gére
 * **MongoDB** avec **Mongoose**
 * **JWT** (authentification)
 * **bcryptjs** (hash des mots de passe)
-* **dotenv**
+* **EJS**
 
 ### Frontend
 
@@ -45,70 +45,93 @@ Mot de passe : dupuis2026
 
 ---
 
-## 🔐 Authentification
+## 📘 Documentation de l’API
+### 🌍 Base URL
 
-L’API est **privée**.
+**Local**
+http://localhost:3000
 
-* Connexion via `POST /login`
-* Authentification par **JWT**
-* Token stocké côté client (localStorage)
-* Accès aux routes protégées via l’en-tête :
+**En Ligne**
+https://api-port-russel-cyda.onrender.com/
 
-```http
-Authorization: Bearer <token>
+## 🔑 Authentification
+
+### ➤ POST `/login`
+
+Connexion d’un utilisateur.
+
+**Body**
+```json
+{
+  "email": "admin@mail.com",
+  "password": "password"
+}
+```
+Réponses
+
+Code	/  Description
+* 200	  /  **Connexion réussie**
+* 401	  /  **Identifiants invalides**
+* 500	  /  **Erreur serveur**
+
+### ➤ GET `/logout`
+Déconnexion de l’utilisateur.
+
+### ➤ GET `/users`
+Retourne la liste des utilisateurs.
+
+### ➤ POST `/users`
+```{
+  "username": "user1",
+  "email": "user1@mail.com",
+  "password": "password"
+}
 ```
 
-* Déconnexion via `GET /logout`
----
+## 🛥️ Catways 🔒
 
-## 🖥️ Interface utilisateur
+### ➤ GET `/catways`
+Retourne la liste des catways.
 
-### Page d’accueil
+### ➤ GET `/catways/:id`
+Retourne un catway par son ID.
 
-* Connexion utilisateur
+### ➤ POST `/catways`
+```{
+  "catwayNumber": 3,
+  "catwayType": "long",
+  "catwayState": "bon état"
+}
+```
 
-### Tableau de bord
+### ➤ PUT `/catways/:id`
+Mise à jour d’un catway.
 
-* Gestion des catways
-* Gestion des réservations liées aux catways
-* Gestion des utilisateurs
-* Déconnexion
+### ➤ DELETE `/catways/:id`
 
----
+## 📅 Réservations 🔒
 
-## 🗃️ Données
+### ➤ GET `/catways/:id/reservations`
+Liste des réservations d’un catway.
 
-Les collections **catways** et **reservations** sont pré-alimentées via les fichiers fournis (`catways.json`, `reservations.json`) et importées dans MongoDB.
+### ➤ POST `/catways/:id/reservations`
+Création d’une réservation.
+```{
+  "clientName": "Jean Dupont",
+  "boatName": "Le Neptune",
+  "startDate": "2024-06-01",
+  "endDate": "2024-06-10"
+}
+```
 
----
+## 🧪 Installation et lancement en local
 
-## 🚀 Installation et lancement
-
-### 1️⃣ Installer les dépendances
-
-```bash
 npm install
-```
-
-### 2️⃣ Configurer l’environnement
-
-Créer un fichier `.env` :
-
-```env
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/port-russell
-JWT_SECRET=secret
-```
-
-### 3️⃣ Lancer le serveur
-
-```bash
 npm run dev
+
+Créer un fichier .env :
 ```
-
----
-
-## 👨‍💻 Auteur
-
-Projet réalisé dans le cadre d’un devoir pédagogique – **Créer une API pour le port de plaisance Russell**.
-Le projet m'a permis d'apprendre le back-end directement via la pratique, mais je ne cache pas avoir du mal avec le language coté serveur.
+PORT=3000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+```
