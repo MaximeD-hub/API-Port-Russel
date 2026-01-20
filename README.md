@@ -81,7 +81,8 @@ Déconnexion de l’utilisateur.
 Retourne la liste des utilisateurs.
 
 ### ➤ POST `/users`
-```{
+```
+{
   "username": "user1",
   "email": "user1@mail.com",
   "password": "password"
@@ -97,7 +98,8 @@ Retourne la liste des catways.
 Retourne un catway par son ID.
 
 ### ➤ POST `/catways`
-```{
+```
+{
   "catwayNumber": 3,
   "catwayType": "long",
   "catwayState": "bon état"
@@ -116,7 +118,8 @@ Liste des réservations d’un catway.
 
 ### ➤ POST `/catways/:id/reservations`
 Création d’une réservation.
-```{
+```
+{
   "clientName": "Jean Dupont",
   "boatName": "Le Neptune",
   "startDate": "2024-06-01",
