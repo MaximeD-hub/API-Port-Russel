@@ -4,6 +4,19 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+const authMiddleware = require("./middlewares/auth.middleware");
+
+app.get("/dashboard", authMiddleware, (req, res) => {
+  res.render("dashboard", {
+    user: req.user
+  });
+});
+
+
+app.set("view engine", "ejs");
+app.set("views", "views");
+
+
 // =====================
 // MIDDLEWARES
 // =====================
