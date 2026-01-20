@@ -60,7 +60,6 @@ https://api-port-russel-cyda.onrender.com/
 
 Connexion d’un utilisateur.
 
-**Body**
 ```json
 {
   "email": "admin@mail.com",
