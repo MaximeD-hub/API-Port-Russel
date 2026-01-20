@@ -34,8 +34,8 @@ Une **interface frontend simple** permet aux utilisateurs authentifiés de gére
 
 ## 🔑 Compte de démonstration
 
-Email : test@cef.com
-Mot de passe : test12345
+Email : gdupuis@portrussell.com
+Mot de passe : dupuis2026
 
 ---
 
