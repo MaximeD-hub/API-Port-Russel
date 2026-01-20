@@ -127,9 +127,10 @@ Création d’une réservation.
 ```
 
 ## 🧪 Installation et lancement en local
-
-- npm install
-- npm run dev
+```
+ npm install
+ npm run dev
+```
 
 Créer un fichier .env :
 ```
