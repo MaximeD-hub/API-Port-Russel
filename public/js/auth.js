@@ -20,9 +20,11 @@ form.addEventListener("submit", async (e) => {
       error.textContent = data.message || "Erreur de connexion";
       return;
     }
-    
-    window.location.href = "/dashboard.html";
-  } catch {
+
+    // ✅ REDIRECTION SERVEUR
+    window.location.href = "/dashboard";
+
+  } catch (err) {
     error.textContent = "Erreur serveur";
   }
 });
