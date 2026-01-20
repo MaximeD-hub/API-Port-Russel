@@ -4,32 +4,51 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+// =====================
+// MIDDLEWARES
+// =====================
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// STATIC FILES (frontend)
+// STATIC FILES
 app.use(express.static("public"));
 
+// =====================
 // ROUTES
+// =====================
+const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const catwayRoutes = require("./routes/catway.routes");
 const reservationRoutes = require("./routes/reservation.routes");
-const authRoutes = require("./routes/auth.routes");
 
 app.use("/", authRoutes);
 app.use("/users", userRoutes);
 app.use("/catways", catwayRoutes);
 app.use("/catways", reservationRoutes);
 
-// DB
+// =====================
+// ROUTE TEST (IMPORTANT POUR RENDER)
+// =====================
+app.get("/", (req, res) => {
+  res.send("API Port de Russell opérationnelle 🚤");
+});
+
+// =====================
+// DATABASE
+// =====================
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connecté"))
-  .catch((err) => console.error(err));
+  .connect(process.env.MONGODB_URI) // ⬅️ NOM CORRECT
+  .then(() => {
+    console.log("✅ MongoDB connecté");
+  })
+  .catch((err) => {
+    console.error("❌ Erreur MongoDB :", err);
+  });
 
+// =====================
 // SERVER
+// =====================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`🚀 Serveur lancé sur le port ${PORT}`)
-);
-
-app.use(express.static("public"));
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur lancé sur le port ${PORT}`);
+});
