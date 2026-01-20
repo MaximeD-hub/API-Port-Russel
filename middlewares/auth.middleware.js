@@ -1,13 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-/**
- * Middleware d'authentification
- */
 module.exports = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies?.token;
 
   if (!token) {
-    return res.status(401).json({ message: "Accès non autorisé" });
+    return res.redirect("/");
   }
 
   try {
@@ -15,6 +12,6 @@ module.exports = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: "Token invalide" });
+    return res.redirect("/");
   }
 };

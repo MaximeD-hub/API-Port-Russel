@@ -36,6 +36,8 @@ exports.login = async (req, res) => {
       sameSite: "lax"
     });
 
+    res.redirect("/dashboard");
+
     res.status(200).json({ message: "Connexion réussie" });
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
