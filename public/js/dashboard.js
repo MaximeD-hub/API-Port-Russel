@@ -1,9 +1,3 @@
-const token = localStorage.getItem("token");
-
-if (!token) {
-  window.location.href = "/";
-}
-
 const catwaysList = document.getElementById("catwaysList");
 const reservationsList = document.getElementById("reservationsList");
 const usersList = document.getElementById("usersList");
@@ -12,8 +6,8 @@ const message = document.getElementById("message");
 /* =========================
    LOGOUT
 ========================= */
-document.getElementById("logout").addEventListener("click", () => {
-  localStorage.removeItem("token");
+document.getElementById("logout").addEventListener("click", async () => {
+  await fetch("/logout");
   window.location.href = "/";
 });
 
@@ -23,19 +17,14 @@ document.getElementById("logout").addEventListener("click", () => {
 
 // FETCH CATWAYS
 async function loadCatways() {
-  const res = await fetch("/catways", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
+  const res = await fetch("/catways");
   const catways = await res.json();
+
   catwaysList.innerHTML = "";
 
   catways.forEach((catway) => {
     const li = document.createElement("li");
     li.textContent = `#${catway.catwayNumber} - ${catway.catwayType} - ${catway.catwayState}`;
-
     li.style.cursor = "pointer";
 
     li.addEventListener("click", () => {
@@ -56,10 +45,7 @@ document.getElementById("catwayForm").addEventListener("submit", async (e) => {
 
   const res = await fetch("/catways", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ catwayNumber, catwayType, catwayState })
   });
 
@@ -92,10 +78,7 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
 
   const res = await fetch(`/catways/${catway}/reservations`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ clientName, boatName, startDate, endDate })
   });
 
@@ -110,24 +93,14 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
   loadReservations(catway);
 });
 
-
-// FETCH RESERVATIONS FOR ONE CATWAY
+// FETCH RESERVATIONS
 async function loadReservations(catwayNumber) {
-  const res = await fetch(`/catways/${catwayNumber}/reservations`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  const res = await fetch(`/catways/${catwayNumber}/reservations`);
+  const reservations = await res.json();
 
-  const data = await res.json();
   reservationsList.innerHTML = "";
 
-  // 🔥 CAS 1 : l'API renvoie directement un tableau
-  const reservations = Array.isArray(data)
-    ? data
-    : data.reservations;
-
-  if (!reservations || reservations.length === 0) {
+  if (!reservations.length) {
     reservationsList.innerHTML = "<li>Aucune réservation</li>";
     return;
   }
@@ -139,20 +112,14 @@ async function loadReservations(catwayNumber) {
   });
 }
 
-
 /* =========================
    USERS
 ========================= */
 
-// FETCH USERS
 async function loadUsers() {
-  const res = await fetch("/users", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
+  const res = await fetch("/users");
   const users = await res.json();
+
   usersList.innerHTML = "";
 
   users.forEach((user) => {
@@ -173,10 +140,7 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
 
   const res = await fetch("/users", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password })
   });
 
