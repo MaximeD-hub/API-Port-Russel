@@ -1,3 +1,11 @@
+/**
+ * =========================
+ * DASHBOARD.JS
+ * Gestion du tableau de bord
+ * Auth via cookie JWT
+ * =========================
+ */
+
 const catwaysList = document.getElementById("catwaysList");
 const reservationsList = document.getElementById("reservationsList");
 const usersList = document.getElementById("usersList");
@@ -7,7 +15,9 @@ const message = document.getElementById("message");
    LOGOUT
 ========================= */
 document.getElementById("logout").addEventListener("click", async () => {
-  await fetch("/logout");
+  await fetch("/logout", {
+    credentials: "same-origin"
+  });
   window.location.href = "/";
 });
 
@@ -15,27 +25,42 @@ document.getElementById("logout").addEventListener("click", async () => {
    CATWAYS
 ========================= */
 
-// FETCH CATWAYS
+/**
+ * Récupère et affiche les catways
+ */
 async function loadCatways() {
-  const res = await fetch("/catways");
-  const catways = await res.json();
-
-  catwaysList.innerHTML = "";
-
-  catways.forEach((catway) => {
-    const li = document.createElement("li");
-    li.textContent = `#${catway.catwayNumber} - ${catway.catwayType} - ${catway.catwayState}`;
-    li.style.cursor = "pointer";
-
-    li.addEventListener("click", () => {
-      loadReservations(catway.catwayNumber);
+  try {
+    const res = await fetch("/catways", {
+      credentials: "same-origin"
     });
 
-    catwaysList.appendChild(li);
-  });
+    if (res.status === 401) {
+      window.location.href = "/";
+      return;
+    }
+
+    const catways = await res.json();
+    catwaysList.innerHTML = "";
+
+    catways.forEach((catway) => {
+      const li = document.createElement("li");
+      li.textContent = `#${catway.catwayNumber} - ${catway.catwayType} - ${catway.catwayState}`;
+      li.style.cursor = "pointer";
+
+      li.addEventListener("click", () => {
+        loadReservations(catway.catwayNumber);
+      });
+
+      catwaysList.appendChild(li);
+    });
+  } catch (err) {
+    message.textContent = "Erreur chargement catways";
+  }
 }
 
-// CREATE CATWAY
+/**
+ * Création d’un catway
+ */
 document.getElementById("catwayForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -45,6 +70,7 @@ document.getElementById("catwayForm").addEventListener("submit", async (e) => {
 
   const res = await fetch("/catways", {
     method: "POST",
+    credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ catwayNumber, catwayType, catwayState })
   });
@@ -66,7 +92,9 @@ loadCatways();
    RÉSERVATIONS
 ========================= */
 
-// CREATE RESERVATION
+/**
+ * Création d’une réservation
+ */
 document.getElementById("reservationForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -78,6 +106,7 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
 
   const res = await fetch(`/catways/${catway}/reservations`, {
     method: "POST",
+    credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ clientName, boatName, startDate, endDate })
   });
@@ -93,11 +122,23 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
   loadReservations(catway);
 });
 
-// FETCH RESERVATIONS
+/**
+ * Récupère les réservations d’un catway
+ * @param {number} catwayNumber
+ */
 async function loadReservations(catwayNumber) {
-  const res = await fetch(`/catways/${catwayNumber}/reservations`);
-  const reservations = await res.json();
+  reservationsList.innerHTML = "<li>Chargement...</li>";
 
+  const res = await fetch(`/catways/${catwayNumber}/reservations`, {
+    credentials: "same-origin"
+  });
+
+  if (res.status === 401) {
+    window.location.href = "/";
+    return;
+  }
+
+  const reservations = await res.json();
   reservationsList.innerHTML = "";
 
   if (!reservations.length) {
@@ -116,10 +157,20 @@ async function loadReservations(catwayNumber) {
    USERS
 ========================= */
 
+/**
+ * Récupère et affiche les utilisateurs
+ */
 async function loadUsers() {
-  const res = await fetch("/users");
-  const users = await res.json();
+  const res = await fetch("/users", {
+    credentials: "same-origin"
+  });
 
+  if (res.status === 401) {
+    window.location.href = "/";
+    return;
+  }
+
+  const users = await res.json();
   usersList.innerHTML = "";
 
   users.forEach((user) => {
@@ -131,6 +182,9 @@ async function loadUsers() {
 
 loadUsers();
 
+/**
+ * Création utilisateur
+ */
 document.getElementById("userForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -140,6 +194,7 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
 
   const res = await fetch("/users", {
     method: "POST",
+    credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password })
   });

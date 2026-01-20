@@ -1,33 +1,32 @@
 const Catway = require("../models/Catway");
 
-// CREATE
-exports.createCatway = async (req, res) => {
-  try {
-    const catway = new Catway(req.body);
-    await catway.save();
-    res.status(201).json(catway);
-  } catch (error) {
-    res.status(500).json({
-      message: "Erreur création catway",
-      error: error.message
-    });
-  }
-};
+/**
+ * @file catway.controller.js
+ * @description Contrôleur de gestion des catways
+ */
 
-// READ ALL
+/**
+ * Récupérer la liste de tous les catways
+ * @route GET /catways
+ * @access Private
+ */
 exports.getAllCatways = async (req, res) => {
   try {
     const catways = await Catway.find();
     res.json(catways);
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "Erreur récupération catways" });
   }
 };
 
-// READ ONE
+/**
+ * Récupérer un catway par son ID MongoDB
+ * @route GET /catways/:id
+ * @access Private
+ */
 exports.getCatwayById = async (req, res) => {
   try {
-    const catway = await Catway.findOne({ catwayNumber: req.params.id });
+    const catway = await Catway.findById(req.params.id);
 
     if (!catway) {
       return res.status(404).json({ message: "Catway introuvable" });
@@ -35,42 +34,74 @@ exports.getCatwayById = async (req, res) => {
 
     res.json(catway);
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "Erreur récupération catway" });
   }
 };
 
-// UPDATE (state only)
+/**
+ * Créer un nouveau catway
+ * @route POST /catways
+ * @access Private
+ */
+exports.createCatway = async (req, res) => {
+  try {
+    const { catwayNumber, catwayType, catwayState } = req.body;
+
+    if (!catwayNumber || !catwayType || !catwayState) {
+      return res.status(400).json({ message: "Champs manquants" });
+    }
+
+    const catway = new Catway({
+      catwayNumber,
+      catwayType,
+      catwayState
+    });
+
+    await catway.save();
+    res.status(201).json(catway);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur création catway" });
+  }
+};
+
+/**
+ * Mettre à jour un catway
+ * @route PUT /catways/:id
+ * @access Private
+ */
 exports.updateCatway = async (req, res) => {
   try {
-    const catway = await Catway.findOneAndUpdate(
-      { catwayNumber: req.params.id },
-      { catwayState: req.body.catwayState },
+    const updatedCatway = await Catway.findByIdAndUpdate(
+      req.params.id,
+      req.body,
       { new: true }
     );
 
-    if (!catway) {
+    if (!updatedCatway) {
       return res.status(404).json({ message: "Catway introuvable" });
     }
 
-    res.json(catway);
+    res.json(updatedCatway);
   } catch (error) {
-    res.status(500).json({ message: "Erreur mise à jour" });
+    res.status(500).json({ message: "Erreur mise à jour catway" });
   }
 };
 
-// DELETE
+/**
+ * Supprimer un catway
+ * @route DELETE /catways/:id
+ * @access Private
+ */
 exports.deleteCatway = async (req, res) => {
   try {
-    const catway = await Catway.findOneAndDelete({
-      catwayNumber: req.params.id
-    });
+    const deletedCatway = await Catway.findByIdAndDelete(req.params.id);
 
-    if (!catway) {
+    if (!deletedCatway) {
       return res.status(404).json({ message: "Catway introuvable" });
     }
 
     res.json({ message: "Catway supprimé" });
   } catch (error) {
-    res.status(500).json({ message: "Erreur suppression" });
+    res.status(500).json({ message: "Erreur suppression catway" });
   }
 };
