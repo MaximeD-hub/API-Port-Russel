@@ -1,6 +1,6 @@
 # ⚓ Port de plaisance de Russell – API de gestion des catways
 
-## 📌 Description du projet
+##  Description du projet
 
 Ce projet consiste à développer une **API REST sécurisée** permettant à la capitainerie du port de plaisance de Russell de gérer :
 
@@ -60,7 +60,6 @@ Authorization: Bearer <token>
 ### Page d’accueil
 
 * Connexion utilisateur
-* Accès à la documentation API
 
 ### Tableau de bord
 
@@ -106,3 +105,4 @@ npm run dev
 ## 👨‍💻 Auteur
 
 Projet réalisé dans le cadre d’un devoir pédagogique – **Créer une API pour le port de plaisance Russell**.
+Le projet m'a permis d'apprendre le back-end directement via la pratique, mais je ne cache pas avoir du mal avec le language coté serveur.
