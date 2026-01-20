@@ -1,15 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-/**
- * Middleware de protection des routes
- * - Pages HTML : redirection vers /
- * - API : réponse JSON 401
- */
 module.exports = (req, res, next) => {
-  const token = req.cookies?.token;
+  const token = req.cookies.token;
 
   if (!token) {
-    return handleUnauthorized(req, res);
+    return res.status(401).json({ message: "Non authentifié" });
   }
 
   try {
@@ -17,16 +12,6 @@ module.exports = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    return handleUnauthorized(req, res);
+    return res.status(401).json({ message: "Token invalide" });
   }
 };
-
-function handleUnauthorized(req, res) {
-  // Appel API (fetch, Postman, etc.)
-  if (req.headers.accept?.includes("application/json")) {
-    return res.status(401).json({ message: "Non authentifié" });
-  }
-
-  // Page HTML
-  return res.redirect("/");
-}
