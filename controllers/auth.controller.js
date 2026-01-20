@@ -1,29 +1,42 @@
-const User = require("../models/User");
+const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+/**
+ * Connexion utilisateur
+ * @route POST /login
+ * @access Public
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password)
-      return res.status(400).json({ message: "Champs manquants" });
-
+    // Vérification utilisateur
     const user = await User.findOne({ email });
-    if (!user)
-      return res.status(401).json({ message: "Utilisateur non trouvé" });
+    if (!user) {
+      return res.status(401).json({ message: "Identifiants invalides" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(401).json({ message: "Mot de passe incorrect" });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Identifiants invalides" });
+    }
 
+    // Création du token JWT
     const token = jwt.sign(
-      { email: user.email },
+      { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
-    res.json({ token });
+    // Cookie HTTP-only
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax"
+    });
+
+    res.status(200).json({ message: "Connexion réussie" });
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
   }

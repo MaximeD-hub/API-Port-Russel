@@ -3,7 +3,9 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 
 router.post("/login", authController.login);
+
 router.get("/logout", (req, res) => {
+  res.clearCookie("token");
   res.json({ message: "Déconnexion réussie" });
 });
 
