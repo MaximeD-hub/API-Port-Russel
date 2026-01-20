@@ -68,7 +68,7 @@ Connexion d’un utilisateur.
 ```
 Réponses
 
-Code	/  Description
+* Code	/  **Description**
 * 200	  /  **Connexion réussie**
 * 401	  /  **Identifiants invalides**
 * 500	  /  **Erreur serveur**
@@ -128,8 +128,8 @@ Création d’une réservation.
 
 ## 🧪 Installation et lancement en local
 
-npm install
-npm run dev
+*npm install
+*npm run dev
 
 Créer un fichier .env :
 ```
