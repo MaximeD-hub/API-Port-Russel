@@ -49,6 +49,9 @@ mongoose
 // SERVER
 // =====================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+
+console.log("🟡 Tentative de démarrage du serveur...");
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Serveur lancé sur le port ${PORT}`);
 });
